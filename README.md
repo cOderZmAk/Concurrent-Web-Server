@@ -25,6 +25,7 @@ PyJWT
 Requests
 
 ▶️ Run the Project
+
 Start the Flask API server:
 python apitest.py
 
