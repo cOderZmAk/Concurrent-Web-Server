@@ -15,6 +15,7 @@ This project simulates an IoT environment with a secure edge gateway that authen
 🛡️ Device config via device_config.json
 
 🛠 Requirements
+
 Python 3.8+
 
 Flask
