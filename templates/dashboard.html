@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IoT Gateway - Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            margin: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            color: #333;
+            text-align: center;
+        }
+        .form {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+        }
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        input[type="submit"] {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        .error {
+            color: #d32f2f;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .success {
+            color: #2e7d32;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ccc;
+            text-align: left;
+        }
+        th {
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        tr:nth-child(even) {
+            background-color: #fafafa;
+        }
+        .logout {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+        .logout a {
+            color: #007bff;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .logout a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logout">
+            <a href="{{ url_for('login') }}">Logout</a>
+        </div>
+        <h2>IoT Gateway Dashboard - Welcome, {{ username }}</h2>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        <form method="POST" action="{{ url_for('dashboard') }}">
+            <input type="hidden" name="token" value="{{ token }}">
+            <div class="form">
+                <label for="device_id">Device ID:</label>
+                <input type="text" id="device" name="device" required>
+            </div>
+            <div class="form">
+                <label for="temperature">Temperature (°F):</label>
+                <input type="number" id="temperature" name="temperature" step="0.1" required>
+            </div>
+            <div class="form">
+                <label for="humidity">Humidity (%):</label>
+                <input type="number" id="humidity" name="humidity" step="0.1" required>
+            </div>
+            <input type="submit" value="Submit Sensor Data">
+        </form>
+        <h3>Recent Sensor Data</h3>
+        {% if iot_data %}
+            <table>
+                <tr>
+                    <th>Device ID</th>
+                    <th>Temperature (°F)</th>
+                    <th>Humidity (%)</th>
+                    <th>Timestamp</th>
+                </tr>
+                {% for row in iot_data %}
+                    <tr>
+                        <td>{{ row[0] }}</td>
+                        <td>{{ row[1] }}</td>
+                        <td>{{ row[2] }}</td>
+                        <td>{{ row[3] }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            <p>No sensor data available.</p>
+        {% endif %}
+    </div>
+</body>
+</html>
