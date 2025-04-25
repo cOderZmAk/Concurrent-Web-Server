@@ -32,6 +32,7 @@ Run the sensor simulator:
 python sensor_simulator.py
 
 📄 Project Structure
+
 apitest.py – Main Flask server
 
 sensor_simulator.py – Simulates temperature & humidity data
